@@ -1,5 +1,6 @@
 const e = require("cors");
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const cors = require("cors");
 // Importing dotenv for accessing env variables
@@ -10,6 +11,10 @@ const app = express();
 // app middlewars
 
 app.use(cors());
+
+// Using body parser middleware for json format
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 const db = require("./models");
 db.mongoose
@@ -30,6 +35,8 @@ db.mongoose
   require("./routes/movie.routes")(app);
   require("./routes/genre.routes")(app);
   require("./routes/artist.routes")(app);
+  require("./routes/user.routes")(app);
+
 
 // app.get("/movies" , (req, res) => {
 //     res.status(200).json("All Movies Data in JSON format from Mongo DB");
