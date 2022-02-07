@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const artistModel = () => {
 
     const Artist = mongoose.model("artist", artistSchema);
-    return { artistSchema, Artist };
+    return Artist;
 }
 
 const artistSchema = mongoose.Schema({
