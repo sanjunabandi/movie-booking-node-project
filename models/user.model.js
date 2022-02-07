@@ -13,18 +13,18 @@ module.exports = (mongoose) => {
 
     const bookingRequestsSchema = mongoose.Schema({
         reference_number: {
-            required: true,
+            required: false,
             type: Number,
             
         },
         coupon_code: {
             required: false,
-            type: Number,
+            type: String,
             
         },
         show_id: {
             required: true,
-            type: Number,
+            type: String,
         },
         tickets: {
             type: [Number],
@@ -79,7 +79,7 @@ module.exports = (mongoose) => {
             required: false,
             type: String,
         },
-        accesstoken: {
+        ["access-token"]: {
             required: false,
             type: String,
         },

@@ -45,7 +45,7 @@ exports.findAllMovies = (req, res) => {
         .then(data => {
 
             if (data.length !== 0) {
-                res.status(200).json(data);
+                res.status(200).send(JSON.stringify({movies: data}));
             }
             else {
                 res.status(404).json({ message: "Movie not Found" });
@@ -58,7 +58,9 @@ exports.findAllMovies = (req, res) => {
 
 exports.fineOne = (req, res) => {
     const id = req.params.id;
-    Movie.findById(id)
+    console.log("Id for details: ", id);
+    const filter = {movieid: id}
+    Movie.find(filter)
         .then(data => {
             if (data.length !== 0) {
                 res.status(200).json(data);
@@ -75,7 +77,8 @@ exports.fineOne = (req, res) => {
 
 exports.findShows = (req, res) => {
     const id = req.params.id;
-    Movie.findById(id)
+    let filter = {movieid: id}
+    Movie.find(filter)
         .then(data => {
             res.status(200).json(data.shows);
         })
