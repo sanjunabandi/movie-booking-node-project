@@ -2,6 +2,12 @@ const {atob , btoa} = require("b2a");
 const db = require("../models");
 const Movie = db.movie;
 
+/**
+ * Function to get first and last name from artists string for filtering purpose
+ * @param {String} artists - comma seperated strings which represent first and last name of an author
+ * @returns {Object} - Obect containing first name and last name array
+ */
+
 const splitIntoFirstAndLastName = (artists) => {
     const artistSplitArray = artists.split(",");
         /*
@@ -20,6 +26,12 @@ const splitIntoFirstAndLastName = (artists) => {
         return {first_name, last_name};
 }
 
+/**
+ * Function to extract username and password from authorization header
+ * @param {String} authorization - Authorization header
+ * @returns {Object} - Object containing decoded username and password
+ */
+
 const extractUsernameAndPassword = (authorization) => {
     
 const authorizationArray = authorization.split(" ");
@@ -32,12 +44,26 @@ const password = userNamePasswordArray[1];
 return {username, password};
 } 
 
+/**
+ * Function to extract access-token from authorization header
+ * @param {String} authHeader - Authorization header
+ * @returns {String} - access-token
+ */
+
 const extractAccessToken = (authHeader) => {
     // authHeader --> "Bearer access-token"
     let authHeaderArray = authHeader.split(" ");
     let access_token = authHeaderArray[1];
     return access_token;
 }
+
+/**
+ * Function to get discount based on the coupen id provided in request body of post request
+ * @param {Array} coupenArray - coupen array of a matched movie 
+ * @param {String} coupenCode - String obtained from url query parameters
+ * @returns {Number} - discount based on the coupenCode specified
+ */
+
 
 const getCoupenDiscount = (coupenArray, coupenCode) => {
     let coupenId = 0;
@@ -59,6 +85,12 @@ const getCoupenDiscount = (coupenArray, coupenCode) => {
     return discount;
 }
 
+/**
+ * Function to return tickets array with individual ticket numbers as elements
+ * @param {Array} tickets - tickets array is a single element array with element as a string with comma seperated values of ticket seat numbers 
+ * @returns {Array} - tickets Array
+ */
+
 const getTicketsArray = (tickets) => {
     let ticketsString = tickets[0];
     let ticketsArray = ticketsString.split(",");
@@ -66,6 +98,12 @@ const getTicketsArray = (tickets) => {
     newTicketsArray = ticketsArray.map(ticket => Number(ticket));
     return newTicketsArray;
 }
+
+/**
+ * Function to update avilable seats of a show of a movie based on user bookings
+ * @param {String} show_id - show id of the movie for which ticket is being booked (Obtained for post request body) 
+ * @returns {null} 
+ */
 
 const updateAvailableSeats = ( show_id ,ticketsArray) => {
     let seatsTaken = ticketsArray.length;
