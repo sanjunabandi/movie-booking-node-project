@@ -6,8 +6,8 @@ const Movie = db.movie;
 
 
 exports.findAllMovies = (req, res) => {
-    console.log("Recieved request for find all movies");
-    console.log(req.query);
+    // console.log("Recieved request for find all movies");
+    // console.log(req.query);
     const { status, title, genres, artists, start_date, end_date} = req.query;
 
     let filter = {};
@@ -24,7 +24,7 @@ exports.findAllMovies = (req, res) => {
     if (genres) {
         let genresArray = genres.split(",");
         filter.genres = { $all: genresArray };
-        console.log("Genres Array: ", genresArray);
+        // console.log("Genres Array: ", genresArray);
     }
 
     if (artists) {
@@ -35,11 +35,11 @@ exports.findAllMovies = (req, res) => {
     }
 
     if(start_date && end_date) {
-        console.log("Entered date if block");
+        // console.log("Entered date if block");
         filter.release_date = {$gte: start_date, $lte:end_date}
     }
 
-    console.log("Filter object: ", filter);
+    // console.log("Filter object: ", filter);
 
     Movie.find(filter)
         .then(data => {
@@ -58,7 +58,7 @@ exports.findAllMovies = (req, res) => {
 
 exports.fineOne = (req, res) => {
     const id = req.params.id;
-    console.log("Id for details: ", id);
+    // console.log("Id for details: ", id);
     const filter = {movieid: id}
     Movie.find(filter)
         .then(data => {

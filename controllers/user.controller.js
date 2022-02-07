@@ -9,11 +9,12 @@ const TokenGenerator = require('uuid-token-generator');
 const token = new TokenGenerator(); // Default is a 128-bit token encoded in base58
 
 exports.login = (req, res) => {
+    // console.log("Request recieved for authorization");
     const authorization = req.headers["authorization"];
-    console.log("Authorization header: ", authorization);
+    // console.log("Authorization header: ", authorization);
     const { username, password } = utils.extractUsernameAndPassword(authorization);
-    console.log("username: ", username);
-    console.log("password: ", password);
+    // console.log("username: ", username);
+    // console.log("password: ", password);
     const filter = { username: username };
     User.findOne(filter)
         .then(user => {
@@ -21,12 +22,12 @@ exports.login = (req, res) => {
                 res.status(400).json({ message: "username or password is incorrect" });
             }
             else {
-                console.log("Original user password is: ", user.password);
+                
                 if (password === user.password) {
                     let uuid = fromString(user.username);
-                    console.log("uuid generated is: ", uuid);
+                    // console.log("uuid generated is: ", uuid);
                     let tokenGenerated = token.generate();
-                    console.log("access-token genereated: ", tokenGenerated);
+                    // console.log("access-token genereated: ", tokenGenerated);
                     user.isLoggedIn = true;
                     user.uuid = uuid;
                     user["access-token"] = tokenGenerated;
@@ -51,8 +52,9 @@ exports.login = (req, res) => {
 }
 
 exports.logout = (req, res) => {
+    // console.log("Request recieved for logout");
     const { uuid } = req.body;
-    console.log("uuid recieved for loging out", uuid);
+    // console.log("uuid recieved for loging out", uuid);
     if (isUuid(uuid)) {
         User.findOne({ uuid: uuid })
             .then(user => {
@@ -75,18 +77,18 @@ exports.logout = (req, res) => {
 
 
 exports.signUp = async (req, res) => {
+    // console.log("request recieved for signup");
     let userCount = 0;
 
     userCount = await User.countDocuments();
 
     const { email_address, first_name, last_name, mobile_number, password } = req.body;
-    console.log("Recieved data for signup: ", req.body);
+    // console.log("Recieved data for signup: ", req.body);
     let filter = { email: email_address };
-    console.log("filter object: ", filter);
+   
     User.findOne(filter)
         .then((data) => {
-            console.log("Data found: ", data);
-            console.log("Entered then block")
+           
             if (data !== null) {
                 res.status(400).json({ message: "User already exists" });
             }
@@ -120,24 +122,24 @@ exports.signUp = async (req, res) => {
 
 
 exports.getCouponCode = (req, res) => {
-    console.log("recieved coupon request");
+    // console.log("recieved coupon request");
     const { code } = req.query;
     if (code) {
         let authHeader = req.headers["authorization"];
-        console.log("Original auth header", authHeader);
+        
         let access_token = "";
         if (authHeader) {
             access_token = utils.extractAccessToken(authHeader);
         }
-        console.log("Requested access token : ", access_token);
+        // console.log("Requested access token : ", access_token);
         User.findOne({ ["access-token"]: access_token })
             .then(user => {
                 
-                console.log("Entered then block");
+                
                 if (user !== null) {
-                    console.log("User coupens are  ", user.coupens);
+                   
                     const discount = utils.getCoupenDiscount(user.coupens, code);
-                    console.log("Discount :", discount);
+                    
                     if (discount !== 0) {
                         res.status(200).json({
                             message: "Discount fetched successfully",
@@ -174,7 +176,7 @@ exports.getCouponCode = (req, res) => {
 }
 
 exports.bookShow = (req, res) => {
-    console.log("Recieved request for booking tickets");
+    // console.log("Recieved request for booking tickets");
     let authHeader = req.headers["authorization"];
     let access_token = "";
     if (authHeader) {
@@ -206,7 +208,7 @@ exports.bookShow = (req, res) => {
 
                         user.save()
                             .then(data => {
-                                console.log("Booking Successful");
+                                // console.log("Booking Successful");
                                 utils.updateAvailableSeats(show_id, ticketsArray);
                             })
                             .catch(err => console.log("Error in booking tickets: ", err))
