@@ -3,9 +3,6 @@
 module.exports = (mongoose) => {
     const { artistSchema } = require("./artist.model");
 
-
-
-
     const showsSchema = mongoose.Schema({
         id: {
             required: true,
@@ -44,7 +41,7 @@ module.exports = (mongoose) => {
         },
         release_date: {
             requied: false,
-            type: Date,
+            type: String,
         },
         publish_date: {
             requied: false,
@@ -87,4 +84,5 @@ module.exports = (mongoose) => {
     )
 
     const Movie = mongoose.model("movie", movieSchema);
+    return Movie;
 }
