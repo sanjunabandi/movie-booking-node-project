@@ -14,7 +14,7 @@ module.exports = (mongoose) => {
         }),
         language: { required: true, type: String },
         show_timing: { required: true, type: Date },
-        available_seats: { required: true, type: Number },
+        available_seats: { required: true, type: String },
         unit_price: { required: true, type: Number }
     })
 
