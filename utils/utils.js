@@ -1,3 +1,6 @@
+const {atob , btoa} = require("b2a");
+
+
 const splitIntoFirstAndLastName = (artists) => {
     const artistSplitArray = artists.split(",");
         /*
@@ -16,4 +19,16 @@ const splitIntoFirstAndLastName = (artists) => {
         return {first_name, last_name};
 }
 
-module.exports = {splitIntoFirstAndLastName};
+const extractUsernameAndPassword = (authorization) => {
+    
+const authorizationArray = authorization.split(" ");
+const userNamePasswordEncoded = authorizationArray[1];
+const userNamePasswordDecoded = atob(userNamePasswordEncoded);
+const userNamePasswordArray = userNamePasswordDecoded.split(":");
+const username = userNamePasswordArray[0];
+const password = userNamePasswordArray[1];
+
+return {username, password};
+} 
+
+module.exports = {splitIntoFirstAndLastName, extractUsernameAndPassword};

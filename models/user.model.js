@@ -4,24 +4,23 @@ module.exports = (mongoose) => {
         id: {
             required: true,
             type: Number,
-            unique: true
-        },
+         },
         discountValue: {
             required: true,
-            type: Number
+            type: Number,
         }
     });
 
-    const bookingRequetsSchema = mongoose.Schema({
+    const bookingRequestsSchema = mongoose.Schema({
         reference_number: {
             required: true,
             type: Number,
-            unique: true
+            
         },
         coupon_code: {
-            required: true,
+            required: false,
             type: Number,
-            unique: true
+            
         },
         show_id: {
             required: true,
@@ -29,15 +28,16 @@ module.exports = (mongoose) => {
         },
         tickets: {
             type: [Number],
-            required: false
+            required: true
         }
     });
 
     const userSchema = mongoose.Schema({
         userid: {
-            required: true,
             type: Number,
-            unique: true
+            required: false,
+            unique: true,
+            dropDups: true
         },
         email: {
             required: true,
@@ -83,11 +83,8 @@ module.exports = (mongoose) => {
             required: false,
             type: String,
         },
-        coupens: [coupenSchema],
-        bookingRequets: [bookingRequetsSchema],
-
-       
-
+        coupens:{type: [coupenSchema], required: false},
+        bookingRequests:{type: [bookingRequestsSchema], required: false}
     },
     {timeStamps: true}
     );
